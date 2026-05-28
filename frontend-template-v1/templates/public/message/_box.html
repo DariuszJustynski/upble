@@ -1,0 +1,43 @@
+<!-- Message list partial (inbox or sent). Loaded into #pmbox.
+     Data: type ("inbox"|"sent"), pms[], pagination.links -->
+
+<table class="user_table">
+  <thead>
+    <tr>
+      <td>title</td>
+      <!-- STATE: inbox -->
+      <td width="100">From</td>
+      <!-- STATE: sent
+      <td width="100">To</td>
+      -->
+      <td width="150">Time</td>
+      <td width="40">Action</td>
+    </tr>
+  </thead>
+  <tbody>
+
+    <!-- REPEAT: one <tr> per message -->
+    <tr>
+      <!-- STATE: unread inbox message — add class="unread" to the link -->
+      <td><a href="/pm/show/{{pm.id}}" class="unread">{{pm.title}}</a></td>
+      <td><a href="/member/{{pm.username}}">{{pm.username}}</a></td>
+      <td><span class="time">{{pm.created_at}}</span></td>
+      <td width="40" class="del"><a href="/pm/del/{{pm.id}}">X</a></td>
+    </tr>
+
+    <tr>
+      <td><a href="/pm/show/{{pm.id}}">{{pm.title}}</a></td>
+      <td><a href="/member/{{pm.username}}">{{pm.username}}</a></td>
+      <td><span class="time">{{pm.created_at}}</span></td>
+      <td width="40" class="del"><a href="/pm/del/{{pm.id}}">X</a></td>
+    </tr>
+    <!-- /REPEAT -->
+
+  </tbody>
+</table>
+
+<!-- Empty state
+<div class="box">No message in this box</div>
+-->
+
+<div class="pagination">{{pagination.links}}</div>

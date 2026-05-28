@@ -1,0 +1,66 @@
+<!-- INCLUDE: layout/header.html -->
+<div id="content">
+  <div id="top" class="clearfix">
+    <div class="span-4"><h1>Login</h1></div>
+  </div>
+
+  <div class="box">
+    <form action="/ucp/login" method="post">
+      <table cellpadding="0" cellspacing="0" class="user_table">
+
+        <tr>
+          <th><label for="login">Email or login</label></th>
+          <td>
+            <input type="text" name="login" id="login" value="{{form.login}}" maxlength="80" size="30" />
+            <span style="color:red;">{{errors.login}}</span>
+          </td>
+        </tr>
+
+        <tr>
+          <th><label for="password">Password</label></th>
+          <td>
+            <input type="password" name="password" id="password" size="30" />
+            <span style="color:red;">{{errors.password}}</span>
+          </td>
+        </tr>
+
+        <!-- Optional captcha (shown when login attempts exceeded threshold) -->
+        <!--
+        <tr>
+          <th>&nbsp;</th>
+          <td>
+            <p>Enter the code exactly as it appears:</p>
+            {{captcha_html}}
+          </td>
+        </tr>
+        <tr>
+          <th><label for="captcha">Confirmation Code</label></th>
+          <td>
+            <input type="text" name="captcha" id="captcha" maxlength="8" />
+            <span style="color:red;">{{errors.captcha}}</span>
+          </td>
+        </tr>
+        -->
+
+        <tr>
+          <th>&nbsp;</th>
+          <td>
+            <input type="checkbox" name="remember" id="remember" value="1" style="margin:0;padding:0;" />
+            <label for="remember">Remember me</label>
+          </td>
+        </tr>
+
+        <tr>
+          <th>&nbsp;</th>
+          <td>
+            <button type="submit" class="submit">Login</button>
+            &nbsp;<a href="/ucp/forgot_password/">Forgot password?</a>
+          </td>
+        </tr>
+
+      </table>
+    </form>
+  </div>
+
+</div>
+<!-- INCLUDE: layout/footer.html -->

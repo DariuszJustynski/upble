@@ -1,0 +1,236 @@
+<!-- INCLUDE: layout/header.html -->
+<!-- Used for both Add Business and Edit Business.
+     When editing: page.mode == "Edit", business.id is set.
+     When adding:  page.mode == "Add",  business.id is empty. -->
+<div id="content">
+  <div class="box last_box clearfix">
+
+    <div class="span-13">
+      <div id="top" class="clearfix">
+        <div class="span-5"><h1>{{page.mode}} A Business</h1></div>
+      </div>
+
+      <form action="/biz/{{page.form_action}}" method="post" id="biz_form">
+
+        <table cellpadding="0" cellspacing="0" class="user_table biz_table">
+
+          <tr>
+            <th>Name:</th>
+            <td>
+              <input type="text" name="name" value="{{business.name}}" />
+              <br /><span style="color:red;">{{errors.name}}</span>
+            </td>
+          </tr>
+
+          <tr>
+            <th>City:</th>
+            <td>
+              <select id="city_id" name="city_id">
+                <!-- REPEAT: one <option> per city -->
+                <option value="{{city.id}}" selected="selected">{{city.name}}</option>
+                <option value="{{city.id}}">{{city.name}}</option>
+              </select>
+              <span style="color:red;">{{errors.city_id}}</span>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Address:</th>
+            <td>
+              <input type="text" name="addrs1" id="address1" value="{{business.address_1}}" /><br />
+              <span style="color:red;">{{errors.address_1}}</span>
+              <br />
+              <input type="text" name="addrs2" id="address2" value="{{business.address_2}}" /><br />
+              <span style="color:red;">{{errors.address_2}}</span>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Neighborhood:</th>
+            <td>
+              <!-- Populated via AJAX: /biz/get_children/{city_id}/city -->
+              <select id="district_id" name="district_id">
+                <option value=""></option>
+                <option value="{{district.id}}" selected="selected">{{district.name}}</option>
+              </select>
+              <span style="color:red;">{{errors.district_id}}</span>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Telephone:</th>
+            <td>
+              <input type="text" name="tel" value="{{business.phone}}" /><br />
+              <span style="color:red;">{{errors.phone}}</span>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Website:</th>
+            <td>
+              <input type="text" name="website" value="{{business.website}}" /><br />
+              <span style="color:red;">{{errors.website}}</span>
+            </td>
+          </tr>
+
+          <tr>
+            <th style="vertical-align:middle;">Category:</th>
+            <td>
+              <div class="span-3">
+                <select id="catid_1" name="catid_1">
+                  <option value=""></option>
+                  <!-- REPEAT: one <option> per top-level category -->
+                  <option value="{{category.id}}" selected="selected">{{category.name}}</option>
+                  <option value="{{category.id}}">{{category.name}}</option>
+                </select>
+                <p><span style="color:red;">{{errors.catid_1}}</span></p>
+              </div>
+              <!-- Sub-category populated via AJAX: /biz/get_children/{catid_1}/category -->
+              <div class="span-3" id="subcat">
+                <select name="catid_2">
+                  <option value=""></option>
+                  <option value="{{sub_category.id}}" selected="selected">{{sub_category.name}}</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th style="vertical-align:top;">About:</th>
+            <td>
+              <textarea cols="50" rows="8" name="about">{{business.about}}</textarea>
+              <span style="color:red;">{{errors.about}}</span>
+            </td>
+          </tr>
+
+          <!-- ── Add mode only: optional inline review ──────────── -->
+          <tr>
+            <td colspan="2">
+              <input type="checkbox" name="with_review" value="1" checked="checked" />
+              &nbsp;&nbsp;<span style="font-weight:bold;">Write A Review for this business</span>
+            </td>
+          </tr>
+          <tr>
+            <th style="vertical-align:middle;">Rating:</th>
+            <td>
+              <div style="width:200px;">
+                <div class="rating-block">
+                  <input type="hidden" name="rating" id="rating" value="{{business.rating}}" />
+                  <ul>
+                    <li><a class="star-1" rating-value="1" title="very poor" href="javascript:void(0);"></a></li>
+                    <li><a class="star-2" rating-value="2" title="poor" href="javascript:void(0);"></a></li>
+                    <li><a class="star-3" rating-value="3" title="average" href="javascript:void(0);"></a></li>
+                    <li><a class="star-4" rating-value="4" title="good" href="javascript:void(0);"></a></li>
+                    <li><a class="star-5" rating-value="5" title="excellent" href="javascript:void(0);"></a></li>
+                  </ul>
+                </div>
+                <span class="rating-hint">click to rate</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th style="vertical-align:top;">Review:</th>
+            <td>
+              <textarea cols="50" rows="8" name="review">{{business.review}}</textarea>
+              <span style="color:red;">{{errors.review}}</span>
+            </td>
+          </tr>
+          <!-- /Add mode only -->
+
+          <!-- ── Edit mode only: published toggle ──────────────── -->
+          <!--
+          <tr>
+            <th>published:</th>
+            <td>
+              <select name="published">
+                <option value="0">0</option>
+                <option value="1" selected="selected">1</option>
+              </select>
+            </td>
+          </tr>
+          -->
+
+          <tr>
+            <th>&nbsp;</th>
+            <td>
+              <button type="submit" class="submit">Submit</button>
+              <input type="hidden" name="location_x" id="lat" value="{{business.location.lat}}" />
+              <input type="hidden" name="location_y" id="lng" value="{{business.location.lng}}" />
+            </td>
+          </tr>
+
+        </table>
+      </form>
+    </div><!-- /span-13 -->
+
+    <!-- Inline map for pin placement -->
+    <div class="span-9 last">
+      <div id="map" class="box last_box" style="height:400px;"></div>
+      <p style="text-align:center;margin-top:5px;color:#66c;">
+        Drag and drop the marker to correct the location
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  /* City names lookup for geocoding (populated from API) */
+  var cities = { "{{city.id}}": "{{city.name}}" };
+
+  $(function() {
+    /* Reload districts when city changes */
+    $('#city_id').change(function() {
+      Utils.loadAction('#district_id', '/biz/get_children/' + $(this).val() + '/city');
+    });
+    /* Reload sub-categories when top category changes */
+    $('#catid_1').change(function() {
+      Utils.loadAction('#subcat', '/biz/get_children/' + parseInt($(this).val()) + '/category');
+    });
+    /* Load Google Maps and auto-geocode address */
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://maps.googleapis.com/maps/api/js?key={{config.google_maps_api_key}}&callback=map_initialize";
+    document.body.appendChild(script);
+  });
+
+  function map_initialize() {
+    var lat = $.trim($('#lat').val());
+    var lng = $.trim($('#lng').val());
+    if (lat === '' || lng === '') { getLatLng(); } else { display_map(); }
+  }
+
+  function display_map() {
+    var lat = $.trim($('#lat').val());
+    var lng = $.trim($('#lng').val());
+    var mapOptions = { zoom: 15, mapTypeId: google.maps.MapTypeId.ROADMAP };
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    if (lat !== '' && lng !== '') {
+      var point = new google.maps.LatLng(lat, lng);
+      map.setCenter(point);
+      var marker = new google.maps.Marker({ position: point, map: map, draggable: true });
+      google.maps.event.addListener(marker, "dragend", function(event) {
+        $("#lat").val(event.latLng.lat());
+        $("#lng").val(event.latLng.lng());
+      });
+    }
+  }
+
+  function getLatLng() {
+    var geocoder  = new google.maps.Geocoder();
+    var city_name = cities[parseInt($("#city_id").val())] || '';
+    var address   = $.trim($("#address1").val() + ' ' + $("#address2").val() + ' ' + city_name);
+    geocoder.geocode({ address: address }, function(results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        var point = results[0].geometry.location;
+        $("#lat").val(point.lat());
+        $("#lng").val(point.lng());
+        display_map();
+      }
+    });
+  }
+
+  $("#city_id").change(getLatLng);
+  $("#address1,#address2").blur(getLatLng);
+</script>
+<!-- INCLUDE: layout/footer.html -->

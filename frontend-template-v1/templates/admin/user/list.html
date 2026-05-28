@@ -1,0 +1,51 @@
+<!-- INCLUDE: admin/layout/header.html -->
+<!-- Data: list[], pagination.links -->
+
+<div id="content">
+  <div class="page-header"><h3>User Management</h3></div>
+
+  <div class="box">
+    <form action="/admin/user/del" method="post">
+      <table class="table">
+        <thead>
+          <tr>
+            <td class="selected last"></td>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Activated</th>
+            <th>Banned</th>
+            <th>Register Time</th>
+            <th>Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- REPEAT: one <tr> per user -->
+          <tr>
+            <td><input type="checkbox" name="id[]" value="{{user.id}}" /></td>
+            <td>{{user.username}}</td>
+            <td>{{user.role}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.activated}}</td>
+            <td>{{user.banned}}</td>
+            <td>{{user.created}}</td>
+            <td><a href="/admin/user/edit/{{user.id}}">Edit</a></td>
+          </tr>
+          <!-- /REPEAT -->
+
+        </tbody>
+      </table>
+
+      <div class="results">
+        {{pagination.links}}
+      </div>
+
+      <div class="form-actions">
+        <input type="submit" class="btn" name="submit" value="Delete Selected Items" />
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- INCLUDE: admin/layout/footer.html -->

@@ -1,0 +1,52 @@
+<!-- Sidebar bio partial. Loaded into #bio_box on profile and user_review pages.
+     Three relationship states: is_self | is_friend | stranger -->
+
+<!-- Hidden form used by follow/unfollow AJAX -->
+<form action="" method="post" id="friendForm">
+  <input type="hidden" name="username" value="{{user.name}}" />
+</form>
+
+<div id="profile_img" class="clearfix">
+  <img class="thumbimg" src="/upload/avatar/{{user.avatar_big_path}}" alt="{{user.name}}" />
+
+  <p>
+    <!-- STATE: stranger — not yet following -->
+    <a href="/mcp/follow/{{user.name}}" class="button f_req">Follow this user</a>
+
+    <!-- STATE: already following
+    <a href="javascript:;" class="button following">Following</a>
+    <a href="/mcp/unfollow/{{user.name}}" class="button unfollow" style="display:none;">Unfollow</a>
+    -->
+
+    <!-- STATE: is_self — no follow button shown -->
+  </p>
+</div>
+
+<ul id="profile_info">
+  <li><span>Name: </span>{{user.name}}</li>
+
+  <li class="clearfix">
+    <div class="icon">
+      <img title="{{user.review_count}} reviews" src="/assets/images/reviews.gif" alt="reviews" />
+    </div>
+    <div style="width:45px;overflow:hidden;float:left;">
+      <a href="/member/{{user.name}}/reviews">{{user.review_count}}</a>
+    </div>
+  </li>
+
+  <li><div class="user_flower">{{user.flower_count}}</div></li>
+
+  <li><span>website: </span><a href="{{user.profile.website}}">{{user.profile.website}}</a></li>
+  <li><span>City: </span>{{user.profile.city}}</li>
+  <li><span>Country: </span>{{user.profile.country}}</li>
+  <li><span>About Me</span><br />{{user.profile.about_me}}</li>
+
+  <!-- STATE: is_self -->
+  <li><a href="/mcp/setting">Update Your Profile</a></li>
+  <li><a href="/ucp/change_password">Change Password</a></li>
+
+  <!-- STATE: other logged-in user -->
+  <!--
+  <li><a href="/pm/compose/{{user.name}}">Send A Message</a></li>
+  -->
+</ul>

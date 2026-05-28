@@ -1,0 +1,71 @@
+<!-- INCLUDE: layout/header.html -->
+<div id="content">
+  <div id="top" class="clearfix">
+    <div class="span-4"><h1>Register</h1></div>
+  </div>
+
+  <div class="box">
+    <form action="/ucp/register" method="post">
+      <table cellpadding="0" cellspacing="0" class="user_table">
+
+        <tr>
+          <th><label for="username">Username</label></th>
+          <td>
+            <input type="text" name="username" id="username" value="{{form.username}}" maxlength="50" size="30" />
+            <span style="color:red;text-align:left;">{{errors.username}}</span>
+          </td>
+        </tr>
+
+        <tr>
+          <th><label for="email">Email Address</label></th>
+          <td>
+            <input type="text" name="email" id="email" value="{{form.email}}" maxlength="80" size="30" />
+            <span style="color:red;text-align:left;">{{errors.email}}</span>
+          </td>
+        </tr>
+
+        <tr>
+          <th><label for="password">Password</label></th>
+          <td>
+            <input type="password" name="password" id="password" size="30" />
+            <span style="color:red;text-align:left;">{{errors.password}}</span>
+          </td>
+        </tr>
+
+        <tr>
+          <th><label for="confirm_password">Confirm Password</label></th>
+          <td>
+            <input type="password" name="confirm_password" id="confirm_password" size="30" />
+            <span style="color:red;text-align:left;">{{errors.confirm_password}}</span>
+          </td>
+        </tr>
+
+        <!-- Optional captcha on registration -->
+        <!--
+        <tr>
+          <th>&nbsp;</th>
+          <td align="left">
+            <p>Enter the code exactly as it appears:</p>
+            {{captcha_html}}
+          </td>
+        </tr>
+        <tr>
+          <th><label for="captcha">Confirmation Code</label></th>
+          <td>
+            <input type="text" name="captcha" id="captcha" maxlength="8" />
+            <span style="color:red;text-align:left;">{{errors.captcha}}</span>
+          </td>
+        </tr>
+        -->
+
+        <tr>
+          <th>&nbsp;</th>
+          <td><button type="submit" name="register" class="submit">Register</button></td>
+        </tr>
+
+      </table>
+    </form>
+  </div>
+
+</div>
+<!-- INCLUDE: layout/footer.html -->

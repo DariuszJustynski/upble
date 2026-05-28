@@ -1,0 +1,94 @@
+<!-- INCLUDE: layout/header.html -->
+<div id="content">
+
+  <!-- Profile tab bar -->
+  <div class="box last_box" style="padding-bottom:0px;">
+    <div class="submenu">
+      <div class="subsub"><h1>{{user.name}}'s Profile</h1></div>
+      <ul class="subnav clearfix">
+        <li><a href="/member/{{user.name}}/network">Network</a></li>
+        <li><a href="/member/{{user.name}}/reviews" class="active">Reviews</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap clearfix">
+    <div id="main" class="span-16">
+      <ul class="review_list clearfix">
+
+        <!-- REPEAT: one <li> per review -->
+        <li>
+          <div id="review_{{review.id}}" class="review user_review_list">
+
+            <!-- Business context -->
+            <div class="span-7" style="color:#999999;">
+              <h2><a href="/biz/{{business.id}}">{{business.name}}</a></h2>
+              <p style="margin-top:5px;">
+                Categories:&nbsp;
+                <a href="/biz/c/{{business.city.slug}}/{{business.category_1.slug}}">{{business.category_1.name}}</a>,&nbsp;
+                <a href="/biz/c/{{business.city.slug}}/{{business.category_2.slug}}">{{business.category_2.name}}</a>
+              </p>
+            </div>
+            <div class="span-8 last" style="float:right;text-align:right;color:#999999;">
+              <p>{{business.address_1}}</p>
+              <p>{{business.district.name}}, {{business.city.name}}</p>
+            </div>
+
+            <br class="clear" />
+
+            <!-- Rating + meta -->
+            <div class="span-3 rating-wrap rating-{{review.rating}}"></div>
+            <div class="span-2 review_time"><span class="time">{{review.date}}</span></div>
+            <div class="span-4 review_time">
+              <span class="time" style="font-style:italic;">Updated at&nbsp;{{review.updated_date}}</span>
+            </div>
+            <div class="span-1 review_time camera">
+              <a href="/photo/{{review.bizid}}/{{review.author.first_photo_id}}/from/{{review.username}}">
+                {{review.author.photo_count}}
+              </a>
+            </div>
+            <!-- Owner: edit link -->
+            <div class="span-1 review_time">
+              <a href="/review/edit/{{review.bizid}}/{{review.id}}">Edit</a>
+            </div>
+
+            <!-- Review text -->
+            <div class="clear">{{review.content}}</div>
+
+            <!-- Flower action -->
+            <div style="margin-top:10px;">
+              <span class="thank">{{config.thank_author_text}}</span>
+              &nbsp;&nbsp;&nbsp;
+              <span>
+                <a href="javascript:void(0)" class="send_flower"
+                   id="send_flower_{{review.author.id}}_{{review.bizid}}_{{review.id}}_review">
+                  <img src="/assets/images/flower.gif" alt="flower" />
+                </a>
+                &nbsp;<span class="blue_note" id="flower_holder_{{review.id}}">{{review.flower_count}}</span>
+              </span>
+            </div>
+
+          </div>
+        </li>
+        <!-- /REPEAT -->
+
+      </ul>
+
+      <div class="pagination">{{pagination.links}}</div>
+
+      <!-- Empty state -->
+      <!--
+      <p>{{user.name}} hasn't written any review yet</p>
+      -->
+    </div>
+
+    <!-- Sidebar: bio -->
+    <div id="side" class="span-8 last">
+      <div id="bio_box" class="box">
+        <!-- INCLUDE: public/user/bio_container.html -->
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- INCLUDE: layout/footer.html -->

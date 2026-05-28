@@ -1,0 +1,35 @@
+<!-- INCLUDE: layout/header.html -->
+<div id="content">
+
+  <!-- Profile tab bar -->
+  <div class="box last_box" style="padding-bottom:0px;">
+    <div class="submenu">
+      <div class="subsub"><h1>{{user.name}}'s Profile</h1></div>
+      <ul class="subnav clearfix">
+        <li><a href="/member/{{user.name}}/network" class="active">Network</a></li>
+        <li><a href="/member/{{user.name}}/reviews">Reviews</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap clearfix">
+    <!-- Main: activity feed + network -->
+    <div id="main" class="span-16">
+      <div id="feed_box" class="box">
+        <!-- INCLUDE: public/user/feed_container.html -->
+      </div>
+      <div id="network_box" class="box last_box">
+        <!-- INCLUDE: public/user/network_container.html -->
+      </div>
+    </div>
+
+    <!-- Sidebar: bio -->
+    <div id="side" class="span-8 last">
+      <div id="bio_box" class="box">
+        <!-- INCLUDE: public/user/bio_container.html -->
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- INCLUDE: layout/footer.html -->
