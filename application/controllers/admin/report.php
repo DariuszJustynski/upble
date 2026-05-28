@@ -34,7 +34,7 @@ class Report extends CI_Controller
 			$this->session->set_flashdata('error','Invalid Access');
 			redirect('admin/report/listing');
 		}
-		array_walk();
+		array_walk($id, function(&$val) { $val = (int)$val; });
 		if($this->reports->del($id))
 		{
 			$this->session->set_flashdata('success','Successfully deleted the selected reports!');
