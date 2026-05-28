@@ -1,0 +1,13 @@
+Welcome to {{site_name}},
+
+Thanks for joining {{site_name}}. We listed your sign in details below. Make sure you keep them safe.
+Follow this link to login on the site:
+
+{{login_url}}
+
+Your username: {{username}}
+
+Your email address: {{email}}
+
+Have fun!
+The {{site_name}} Team
