@@ -1,0 +1,28 @@
+<!-- User navigation bar — shown inside #user div in header.
+     Two states: logged-in and guest.
+     API should inject: user.name, user.is_admin, user.pm_unread_count -->
+
+<!-- STATE: logged in -->
+<ul id="bar">
+  <!-- Admin link — only shown when user.is_admin == true -->
+  <li><a href="/admin/node/nodelist/city">admin</a></li>
+
+  <li>
+    <a href="/ucp/logout" onclick="Login._logout(event);return false;" rel="nofollow">logout</a>
+  </li>
+  <li>
+    <a href="/pm/inbox">message({{user.pm_unread_count}})</a>
+  </li>
+  <li class="thumb">
+    <a href="/member/{{user.name}}"><strong>{{user.name}}</strong></a>
+  </li>
+</ul>
+
+<!--
+  STATE: guest (not logged in)
+  <ul id="bar">
+    <li><a href="/ucp/forgot_password" rel="nofollow">forgot password</a></li>
+    <li><a href="/ucp/register" rel="nofollow">register</a></li>
+    <li><a href="/ucp/login" onclick="Login._show(event);return false;" rel="nofollow">login</a></li>
+  </ul>
+-->

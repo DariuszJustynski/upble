@@ -1,0 +1,58 @@
+[
+  {
+    "id": "1",
+    "employer_id": "1",
+    "author": "sarah_m",
+    "rating": 5,
+    "content": "Wonderful place to work! The team is incredibly supportive and the café has a great atmosphere. Accommodation was basic but comfortable — everything you need. Highly recommend for anyone looking for a first hospitality experience in Bangkok.",
+    "created_at": "2026-04-10"
+  },
+  {
+    "id": "2",
+    "employer_id": "1",
+    "author": "tom_travels",
+    "rating": 4,
+    "content": "Good experience overall. Gets very busy during peak hours but you learn fast. Manager is fair and communicates well. Staff meals on shift are a big plus — saves a lot on food costs.",
+    "created_at": "2026-03-22"
+  },
+  {
+    "id": "3",
+    "employer_id": "2",
+    "author": "diver_ana",
+    "rating": 5,
+    "content": "Best dive school I've worked for. Very professional set-up, beautiful dive sites, and the team genuinely feels like family. The accommodation is simple but the island life more than makes up for it.",
+    "created_at": "2026-05-01"
+  },
+  {
+    "id": "4",
+    "employer_id": "2",
+    "author": "fins_n_bubbles",
+    "rating": 5,
+    "content": "Fantastic season here. Equipment is well-maintained, management respects instructors' time off, and guests are genuinely enthusiastic. Would return without hesitation.",
+    "created_at": "2026-04-18"
+  },
+  {
+    "id": "5",
+    "employer_id": "4",
+    "author": "yogi_jules",
+    "rating": 5,
+    "content": "The bungalow and food were exceptional — fresh, organic, and absolutely delicious. Great guests, peaceful environment, and the owner is deeply committed to authentic practice. A transformative experience.",
+    "created_at": "2026-05-15"
+  },
+  {
+    "id": "6",
+    "employer_id": "3",
+    "author": "teacher_k",
+    "rating": 4,
+    "content": "Professional school with great admin support. Students are motivated and the lesson materials are solid. The apartment provided was lovely. Communication before arrival could be improved.",
+    "created_at": "2026-04-28"
+  },
+  {
+    "id": "7",
+    "employer_id": "5",
+    "author": "earthworm_erin",
+    "rating": 4,
+    "content": "Really special place for anyone wanting a taste of sustainable farming. Hard work but incredibly rewarding. The cabin is rustic but the mountains and stars at night are unbeatable.",
+    "created_at": "2026-03-05"
+  }
+]

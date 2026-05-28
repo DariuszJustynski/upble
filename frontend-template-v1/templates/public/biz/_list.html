@@ -1,0 +1,80 @@
+<!-- Partial: reusable business list.
+     Used by: biz/search.html, biz/category.html
+     Data: businesses[] array, pagination.links -->
+
+<ul class="review_list clearfix" style="margin-top:10px;">
+
+  <!-- REPEAT: one <li> per business -->
+  <li class="biz_list clearfix">
+    <div class="span-12">
+      <div class="heading">
+        <h2><a href="/biz/{{business.id}}">{{business.name}}</a></h2>
+      </div>
+      <div class="span-3 star_wrap">
+        <div class="active-star" style="width:{{business.rating_percent}};height:16px;z-index:20;"></div>
+      </div>
+      <div class="span-2">
+        <a href="/biz/{{business.id}}#commentlist" style="line-height:16px;">
+          {{business.review_count}}&nbsp;reviews
+        </a>
+      </div>
+      <div class="bizinfo clear">
+        <p>
+          Categories:&nbsp;
+          <a href="/biz/c/{{city.slug}}/{{business.category_1.slug}}">{{business.category_1.name}}</a>,&nbsp;
+          <a href="/biz/c/{{city.slug}}/{{business.category_2.slug}}">{{business.category_2.name}}</a>
+        </p>
+        <p>{{business.address_1}}</p>
+        <p>{{business.district.name}}, {{business.city.name}}</p>
+        <p>{{business.phone}}</p>
+      </div>
+    </div>
+
+    <div class="span-3 last" style="float:right;text-align:center;line-height:20px;">
+      <a href="/photo/{{business.id}}/{{business.first_photo.id}}">
+        <img src="/upload/biz_photos/{{business.first_photo.folder}}/{{business.first_photo.id}}.thumb.jpg"
+             class="thumbimg" alt="{{business.name}}" />
+      </a>
+      <p><a href="/photo/{{business.id}}/{{business.first_photo.id}}">{{business.photo_count}} photos</a></p>
+    </div>
+  </li>
+
+  <li class="biz_list clearfix">
+    <div class="span-12">
+      <div class="heading">
+        <h2><a href="/biz/{{business.id}}">{{business.name}}</a></h2>
+      </div>
+      <div class="span-3 star_wrap">
+        <div class="active-star" style="width:{{business.rating_percent}};height:16px;z-index:20;"></div>
+      </div>
+      <div class="span-2">
+        <a href="/biz/{{business.id}}#commentlist" style="line-height:16px;">
+          {{business.review_count}}&nbsp;review
+        </a>
+      </div>
+      <div class="bizinfo clear">
+        <p>
+          Categories:&nbsp;
+          <a href="/biz/c/{{city.slug}}/{{business.category_1.slug}}">{{business.category_1.name}}</a>
+        </p>
+        <p>{{business.address_1}}</p>
+        <p>{{business.city.name}}</p>
+        <p>{{business.phone}}</p>
+      </div>
+    </div>
+    <div class="span-3 last" style="float:right;text-align:center;line-height:20px;">
+      <!-- No photo state: thumbnail column empty -->
+    </div>
+  </li>
+
+</ul>
+
+<!-- Pagination -->
+<div class="pagination">
+  {{pagination.links}}
+</div>
+
+<!-- Empty state -->
+<!--
+<p>No record</p>
+-->

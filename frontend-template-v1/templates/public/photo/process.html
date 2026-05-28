@@ -1,0 +1,15 @@
+<!-- Partial: injected into #img_holder after each successful Uploadify upload.
+     Returned as JSON { type:1, view: "<this HTML>" } from /photo/uploadFile.
+     Data: photo.thumb_path, photo.id, business.id -->
+
+<img src="/{{photo.thumb_path}}" alt="uploaded photo" />
+
+<!-- User can delete within 10 min of upload -->
+<p style="margin:10px 0;">
+  <a href="/photo/del/{{business.id}}/{{photo.id}}" class="del_img">Delete</a>
+</p>
+
+<p>
+  caption <span class="time">(Optional)</span>:<br />
+  <textarea name="caption[{{photo.id}}]" cols="22" rows="3"></textarea>
+</p>

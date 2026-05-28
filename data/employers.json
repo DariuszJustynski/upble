@@ -1,0 +1,67 @@
+[
+  {
+    "id": "1",
+    "name": "Green Leaf Café",
+    "city": "Bangkok",
+    "country": "Thailand",
+    "category": "Hospitality",
+    "description": "A popular expat-friendly café and co-working space in the heart of Bangkok's Silom district. Known for excellent specialty coffee, home-cooked food, and a genuinely welcoming team. We hire internationally and provide on-site orientation for all new staff.",
+    "avatar": "/assets/images/default_avatar_big.gif",
+    "website": "https://greenleafbkk.example.com",
+    "rating": 4.5,
+    "review_count": 8,
+    "created_at": "2024-01-15"
+  },
+  {
+    "id": "2",
+    "name": "Blue Horizon Dive School",
+    "city": "Koh Tao",
+    "country": "Thailand",
+    "category": "Sports & Outdoors",
+    "description": "One of Koh Tao's longest-running PADI dive schools, offering everything from beginner Open Water courses to Divemaster training. Our team of 12 instructors comes from 8 different countries. Consistently rated among the top dive schools on the island.",
+    "avatar": "/assets/images/default_avatar_big.gif",
+    "website": "https://bluehorizondivers.example.com",
+    "rating": 4.8,
+    "review_count": 22,
+    "created_at": "2023-06-10"
+  },
+  {
+    "id": "3",
+    "name": "Lanna Language Academy",
+    "city": "Chiang Mai",
+    "country": "Thailand",
+    "category": "Education",
+    "description": "A boutique language school serving students, professionals, and expats in northern Thailand for over a decade. Our English programmes focus on practical communication skills. Small class sizes (max 10 students) ensure genuine learning outcomes.",
+    "avatar": "/assets/images/default_avatar_big.gif",
+    "website": "https://lannaacademy.example.com",
+    "rating": 4.2,
+    "review_count": 14,
+    "created_at": "2023-03-22"
+  },
+  {
+    "id": "4",
+    "name": "Serenity Ubud Retreat",
+    "city": "Ubud",
+    "country": "Indonesia",
+    "category": "Wellness",
+    "description": "An eco-friendly yoga and wellness retreat nestled in the rice paddies of Ubud, Bali. We host week-long retreats for international guests and run a small school for aspiring yoga teachers. All produce is grown on-site or sourced locally.",
+    "avatar": "/assets/images/default_avatar_big.gif",
+    "website": "https://serenityubud.example.com",
+    "rating": 4.9,
+    "review_count": 31,
+    "created_at": "2023-09-01"
+  },
+  {
+    "id": "5",
+    "name": "Pai Mountain Farm",
+    "city": "Pai",
+    "country": "Thailand",
+    "category": "Agriculture",
+    "description": "A small family-run permaculture farm in the mountains of northern Thailand. We practice no-till farming, seed-saving, and natural building. A great place to learn sustainable skills in a quiet, community-focused setting.",
+    "avatar": "/assets/images/default_avatar_big.gif",
+    "website": "",
+    "rating": 4.4,
+    "review_count": 6,
+    "created_at": "2024-04-08"
+  }
+]

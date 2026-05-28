@@ -1,0 +1,25 @@
+<!-- INCLUDE: layout/header.html -->
+<div id="content">
+
+  <div id="messagebox" class="box last_box">
+    <div class="submenu">
+      <div class="add"><a href="/pm/compose">Write A message</a></div>
+      <ul class="subnav clearfix">
+        <!-- STATE: inbox active -->
+        <li><a href="/pm/inbox" class="active">Inbox</a></li>
+        <li><a href="/pm/sent">Sent</a></li>
+
+        <!-- STATE: sent active
+        <li><a href="/pm/inbox">Inbox</a></li>
+        <li><a href="/pm/sent" class="active">Sent</a></li>
+        -->
+      </ul>
+    </div>
+
+    <div id="pmbox">
+      <!-- INCLUDE: public/message/_box.html  (or _form.html / _show.html depending on route) -->
+    </div>
+  </div>
+
+</div>
+<!-- INCLUDE: layout/footer.html -->

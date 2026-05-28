@@ -1,0 +1,46 @@
+<!-- Following / Followers partial. Loaded into #network_box (initial + AJAX pagination).
+     Data: type ("following"|"followers"), user.name, list[], count, pagination.links -->
+
+<div class="heading clearfix">
+  <div class="span-8">
+    <h4>{{type_label}}&nbsp;(&nbsp;{{count}}&nbsp;)</h4>
+  </div>
+  <div class="span-7 last">
+    <ul class="sort">
+      <li class="last" id="li2_network_box">
+        <a href="/mcp/network/{{user.name}}/followers/" class="pg">Followers</a>
+      </li>
+      <li id="li1_network_box">
+        <!-- "selected" class added when this tab is active -->
+        <a href="/mcp/network/{{user.name}}/following/" class="pg selected">Following</a>
+      </li>
+      <li><span>Sort By:</span></li>
+    </ul>
+  </div>
+</div>
+
+<ul id="friends" class="clearfix">
+
+  <!-- REPEAT: one <li> per friend/follower -->
+  <li>
+    <div class="img_mid">
+      <a href="/member/{{friend.name}}">
+        <img alt="{{friend.name}}" src="/upload/avatar/{{friend.avatar_path}}" />
+      </a>
+    </div>
+    <h5><a href="/member/{{friend.name}}">{{friend.name}}</a></h5>
+  </li>
+
+  <li>
+    <div class="img_mid">
+      <a href="/member/{{friend.name}}">
+        <img alt="{{friend.name}}" src="/upload/avatar/{{friend.avatar_path}}" />
+      </a>
+    </div>
+    <h5><a href="/member/{{friend.name}}">{{friend.name}}</a></h5>
+  </li>
+  <!-- /REPEAT -->
+
+</ul>
+
+<div class="pagination">{{pagination.links}}</div>

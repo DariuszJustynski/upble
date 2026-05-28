@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "offer_id": "1",
+    "type": "Shared apartment",
+    "description": "Clean 2-bedroom apartment shared with 1–2 other staff members, a 10-minute walk from the café in the On Nut area.",
+    "amenities": ["WiFi", "Air conditioning", "Kitchen", "Washing machine", "Hot water"]
+  },
+  {
+    "id": "2",
+    "offer_id": "2",
+    "type": "Shared bungalow",
+    "description": "Island-style shared bungalow within the dive school compound, walking distance to Mae Haad beach.",
+    "amenities": ["Fan", "Shared bathroom", "Outdoor communal area", "Drinking water provided"]
+  },
+  {
+    "id": "3",
+    "offer_id": "3",
+    "type": "Studio apartment",
+    "description": "Private furnished studio within 5 minutes of the school in the Nimman area. Bills and internet included.",
+    "amenities": ["WiFi", "Air conditioning", "Private bathroom", "Kitchenette", "Desk & chair"]
+  },
+  {
+    "id": "5",
+    "offer_id": "5",
+    "type": "Private eco-bungalow",
+    "description": "Your own private eco-bungalow set among the retreat gardens, with rice-paddy views and an outdoor shower.",
+    "amenities": ["Fan", "Private bathroom", "Garden terrace", "All meals included", "Laundry service"]
+  },
+  {
+    "id": "6",
+    "offer_id": "6",
+    "type": "Shared eco-cabin",
+    "description": "Simple shared off-grid eco-cabin on the farm. Solar power, compost toilet, mountain views.",
+    "amenities": ["Solar lighting", "Outdoor shower", "Mountain views", "All meals included"]
+  }
+]
