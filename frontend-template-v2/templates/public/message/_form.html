@@ -1,0 +1,37 @@
+<!-- Compose / reply form partial. Loaded into #pmbox.
+     Data: message.reciever, message.title, message.content, errors.* -->
+
+<form action="/pm/compose" method="post">
+  <table class="user_table new_pm">
+
+    <tr>
+      <th>Reciever:</th>
+      <td>
+        <input type="text" name="reciever" value="{{message.reciever}}" />
+        <br /><span style="color:red;">{{errors.reciever}}</span>
+      </td>
+    </tr>
+
+    <tr>
+      <th>Title:</th>
+      <td>
+        <input type="text" name="title" size="40" value="{{message.title}}" />
+        <br /><span style="color:red;">{{errors.title}}</span>
+      </td>
+    </tr>
+
+    <tr>
+      <th style="vertical-align:top;">Content:</th>
+      <td>
+        <textarea rows="6" cols="50" name="content">{{message.content}}</textarea>
+        <br /><span style="color:red;">{{errors.content}}</span>
+      </td>
+    </tr>
+
+    <tr>
+      <th>&nbsp;</th>
+      <td><button type="submit" class="submit">Send</button></td>
+    </tr>
+
+  </table>
+</form>

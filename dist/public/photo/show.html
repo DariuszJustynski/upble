@@ -1,0 +1,325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <title>{{page.title}}</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+  <link rel="stylesheet" href="../../assets/css/screen.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="../../assets/css/print.css" type="text/css" media="print" />
+  <!--[if IE]>
+    <link rel="stylesheet" href="../../assets/css/ie.css" type="text/css" media="screen, projection" />
+  <![endif]-->
+  <link rel="stylesheet" href="../../assets/css/style.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="../../assets/css/colorbox.css" type="text/css" />
+  <script src="../../assets/js/jquery.js"></script>
+  <script src="../../assets/js/jquery.colorbox-min.js"></script>
+  <script src="../../assets/js/common.js"></script>
+</head>
+
+<body>
+
+  <!-- Global AJAX loading spinner -->
+  <div id="loading" style="display:none;">
+    <img width="32" height="32" src="../../assets/images/loading.gif" />
+  </div>
+
+  <!-- Top bar: city selector + user nav -->
+  <div id="prfs">
+    <div id="user_nav" class="container">
+
+      <div class="span-3" style="color:#9999CC;">
+        <strong>{{city.current.name}}</strong>
+      </div>
+
+      <ul id="citybar">
+        <li><span style="color:#999999">Other cities: </span></li>
+        <!-- REPEAT: one <li> per city -->
+        <li><a href="/{{city.slug}}">{{city.name}}</a></li>
+        <li><a href="/{{city.slug}}">{{city.name}}</a></li>
+      </ul>
+
+      <div id="user">
+        <!-- User navigation bar — shown inside #user div in header.
+     Two states: logged-in and guest.
+     API should inject: user.name, user.is_admin, user.pm_unread_count -->
+
+<!-- STATE: logged in -->
+<ul id="bar">
+  <!-- Admin link — only shown when user.is_admin == true -->
+  <li><a href="/admin/node/nodelist/city">admin</a></li>
+
+  <li>
+    <a href="/ucp/logout" onclick="Login._logout(event);return false;" rel="nofollow">logout</a>
+  </li>
+  <li>
+    <a href="/pm/inbox">message({{user.pm_unread_count}})</a>
+  </li>
+  <li class="thumb">
+    <a href="/member/{{user.name}}"><strong>{{user.name}}</strong></a>
+  </li>
+</ul>
+
+<!--
+  STATE: guest (not logged in)
+  <ul id="bar">
+    <li><a href="/ucp/forgot_password" rel="nofollow">forgot password</a></li>
+    <li><a href="/ucp/register" rel="nofollow">register</a></li>
+    <li><a href="/ucp/login" onclick="Login._show(event);return false;" rel="nofollow">login</a></li>
+  </ul>
+-->
+
+      </div>
+
+      <!-- Inline quick-login form (shown/hidden via JS) -->
+      <div id="login_form" style="display:none;">
+        <form action="/ucp/login" method="post" id="loginForm">
+          <input type="hidden" name="inajax" value="1" />
+          <a class="close" href="javascript:void(0)" onclick="Login._close();">X</a>
+          <p>
+            <label for="login">username:&nbsp;&nbsp;</label><br />
+            <input type="text" id="login" name="login" />
+          </p>
+          <p>
+            <label for="password">password:&nbsp;&nbsp;</label><br />
+            <input type="password" id="password" name="password" />
+          </p>
+          <p>
+            <input type="checkbox" name="remember" id="remember" value="1" />
+            <label for="remember">Remember me</label>
+          </p>
+          <a class="button" href="javascript:void(0)" onclick="Login._submit()">Login</a>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Site header: logo + search + add business + category nav -->
+  <div id="header" class="container">
+
+    <div class="span-5" id="logo">
+      <img src="../../assets/images/logo.png" alt="Upble" />
+    </div>
+
+    <div class="span-12 search_box">
+      <form id="searchbox" action="/biz/search" method="post">
+        <input type="text" id="q" name="q" value="Search Business In {{city.current.name}}" />
+        <button id="s_submit">GO</button>
+      </form>
+    </div>
+
+    <div class="add_btm">
+      <a href="/biz/add">Add A Business</a>
+    </div>
+
+    <div class="clear"></div>
+
+    <div id="nav" class="container">
+      <a href="/">Home</a>
+      <!-- REPEAT: one <a> per top-level category -->
+      <a href="/biz/c/{{city.slug}}/{{category.slug}}">{{category.name}}</a>
+      <a href="/biz/c/{{city.slug}}/{{category.slug}}">{{category.name}}</a>
+      <a href="/biz/c/{{city.slug}}/{{category.slug}}">{{category.name}}</a>
+    </div>
+
+    <!-- Flash messages (error / success) -->
+    <div id="flashmsg" class="alert alert-error">
+      <a class="close" data-dismiss="alert" href="#">x</a>
+      {{flash.error}}
+    </div>
+    <!-- OR success variant:
+    <div id="flashmsg" class="alert alert-success">
+      <a class="close" href="javascript:;">x</a>
+      {{flash.success}}
+    </div>
+    -->
+
+  </div>
+
+  <!-- Global report/flag colorbox target (hidden) -->
+  <div style="display:none">
+    <div id="report_box" style="width:180px;height:150px;">
+      <h5>The reason to flag</h5>
+      <form action="/report/add" method="post" id="report_form">
+        <p style="margin-top:10px;">
+          <textarea name="comment" id="comment" cols="20" rows="3"></textarea>
+          <input type="hidden" name="url" value="" />
+        </p>
+        <div style="color:red;" id="msg"></div>
+        <p style="margin-top:10px;"><button id="report_bt">Submit</button></p>
+      </form>
+    </div>
+  </div>
+
+<div id="content">
+
+  <!-- Navigation bar: prev / counter / next + business link -->
+  <div class="box clearfix" style="text-align:center;">
+    <div class="span-11">
+      <a class="page_button active_button span-2"
+         href="/photo/{{prev_photo.bizid}}/{{prev_photo.id}}">Previous</a>
+      <!-- Disabled previous: class="page_button blur_button" with no href -->
+
+      <div class="span-4" style="line-height:30px;">
+        <strong>{{photo.order}}</strong>&nbsp;of&nbsp;<strong>{{photo.total_count}}</strong>
+      </div>
+
+      <a id="next_page" class="page_button active_button span-2"
+         href="/photo/{{next_photo.bizid}}/{{next_photo.id}}">next</a>
+      <!-- Disabled next: class="page_button blur_button" with no href -->
+    </div>
+
+    <div class="span-12" style="text-align:right;line-height:20px;">
+      <p><h1><a href="/biz/{{business.id}}">{{business.name}}</a> Photos</h1></p>
+      <p><a href="/photo/upload/{{business.id}}">Add your photos</a></p>
+    </div>
+  </div>
+
+  <!-- Main photo + sidebar -->
+  <div class="box clearfix">
+    <!-- Large photo -->
+    <div class="span-16" style="background-color:#F5F5F5;width:630px;padding:10px 0;text-align:center;">
+      <img style="cursor:pointer;" id="current_img"
+           src="/upload/biz_photos/{{photo.folder}}/{{photo.id}}.jpg"
+           alt="{{photo.caption}}" />
+    </div>
+
+    <!-- Sidebar: uploader info + actions -->
+    <div class="span-7 last">
+      <div class="box last_box">
+
+        <div class="span-4">
+          <div class="img_mid">
+            <a href="/member/{{photo.username}}">
+              <img src="/upload/avatar/{{photo.author.avatar_path}}" alt="{{photo.username}}" />
+            </a>
+          </div>
+          <div class="span-2 last">
+            <strong><a href="/member/{{photo.username}}">{{photo.username}}</a></strong>
+          </div>
+          <!-- Review count badge -->
+          <div class="span-2 last" style="margin-top:4px;">
+            <div class="icon">
+              <img title="{{photo.author.review_count}} reviews" src="../../assets/images/reviews.gif" alt="reviews" />
+            </div>
+            <div style="width:45px;overflow:hidden;float:left;">
+              <a href="/member/{{photo.username}}/reviews">{{photo.author.review_count}}</a>
+            </div>
+          </div>
+          <!-- Flower count -->
+          <div class="span-2 last user_flower" id="user_flower_{{photo.author.id}}" style="margin-top:4px;">
+            {{photo.author.flower_count}}
+          </div>
+        </div>
+
+        <div class="clear"></div>
+
+        <p style="margin:10px 0;font-weight:bold;">"{{photo.caption}}"</p>
+
+        <p class="thank">
+          {{config.thank_author_text}}
+          <a href="javascript:void(0)" class="send_flower"
+             id="send_flower_{{photo.author.id}}_{{photo.bizid}}_{{photo.id}}_photo">
+            <img src="../../assets/images/flower.gif" alt="flower" />
+          </a>
+          &nbsp;<span class="blue_note" id="flower_holder_{{photo.id}}">{{photo.flower_count}}</span>
+        </p>
+
+        <p class="time" style="margin:10px 0;">Uploaded on {{photo.date}}</p>
+
+        <!-- Single-user mode: link back to all photos -->
+        <p style="margin:10px 0;">
+          <a href="/photo/{{business.id}}/{{first_photo.id}}">
+            View all photos for <span style="font-weight:bold;">{{business.name}}</span>
+          </a>
+        </p>
+
+        <p style="margin:10px 0;">
+          <a href="/review/show/{{photo.id}}" class="flag">Flag this photo</a>
+        </p>
+
+        <!-- Admin: delete photo -->
+        <form action="/photo/del" method="post" id="del_photo_form">
+          <input type="hidden" name="bizid" value="{{business.id}}" />
+          <input type="hidden" name="id" value="{{photo.id}}" />
+          <p style="margin:10px 0;">
+            <a href="javascript:;" class="admin_del_photo">Delete this photo</a>
+          </p>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Thumbnail strip + pagination -->
+  <div class="wrap clearfix">
+    <div id="main" class="span-16">
+      <div class="box last_box clearfix">
+
+        <!-- REPEAT: one <div> per photo in current page -->
+        <div class="span-3" style="margin-bottom:20px;">
+          <div class="photo_inner cur_photo">
+            <!-- cur_photo class on the currently-viewed photo -->
+            <a href="/photo/{{thumb.bizid}}/{{thumb.id}}">
+              <img src="/upload/biz_photos/{{thumb.folder}}/{{thumb.id}}.thumb.jpg"
+                   class="thumbimg" title="{{thumb.caption}}" alt="{{thumb.caption}}" />
+            </a>
+          </div>
+          <div style="text-align:center;">
+            From&nbsp;&nbsp;<a href="/member/{{thumb.username}}">{{thumb.username}}</a>
+          </div>
+        </div>
+
+        <div class="span-3" style="margin-bottom:20px;">
+          <div class="photo_inner">
+            <a href="/photo/{{thumb.bizid}}/{{thumb.id}}">
+              <img src="/upload/biz_photos/{{thumb.folder}}/{{thumb.id}}.thumb.jpg"
+                   class="thumbimg" title="{{thumb.caption}}" alt="{{thumb.caption}}" />
+            </a>
+          </div>
+          <div style="text-align:center;">
+            From&nbsp;&nbsp;<a href="/member/{{thumb.username}}">{{thumb.username}}</a>
+          </div>
+        </div>
+        <!-- /REPEAT -->
+
+      </div>
+      <div class="pagination">{{pagination.links}}</div>
+    </div>
+    <div id="side" class="span-8 last"></div>
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    /* Click main photo to advance to next */
+    $('#current_img').click(function() {
+      var next = $('#next_page').attr('href');
+      if (next) { window.location.href = next; }
+    });
+
+    /* Admin: delete photo via AJAX POST */
+    $(".admin_del_photo").click(function() {
+      if (confirm("Do you really want to delete this photo?")) {
+        Utils.postAction('/photo/del', $("#del_photo_form").serialize(), function(data) {
+          if (data == 1) {
+            var href = '';
+            $(".page_button").each(function() {
+              if ($(this).attr('href')) { href = $(this).attr('href'); }
+            });
+            window.location = href || '/biz/{{business.id}}';
+          }
+        });
+      }
+    });
+  });
+</script>
+<div class="footer">
+  <p>Powered by <a href="http://upble.com">Upble</a></p>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,52 @@
+<!-- INCLUDE: admin/layout/header.html -->
+<!-- Data: table ("city"|"category"), alias.table (e.g. "City"), topNodes[], childNodes{} -->
+
+<div><a href="/admin/node/add/{{table}}" class="btn">Add A {{alias.table}}</a></div>
+
+<form action="/admin/node/order/{{table}}" method="post">
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="left" width="20%">Order</th>
+        <th>Name</th>
+        <th>Operation</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- REPEAT: top-level nodes -->
+      <tr>
+        <td><input type="text" name="order[{{node.id}}]" value="{{node.order}}" style="width:30px;" /></td>
+        <td><strong>{{node.name}}</strong></td>
+        <td>
+          <a href="/admin/node/del/{{table}}/{{node.id}}"
+             onclick="return confirm('Do you really want to delete {{node.name}}');">Delete</a>
+          &nbsp;&nbsp;&nbsp;
+          <a href="/admin/node/edit/{{table}}/{{node.id}}">Edit</a>
+        </td>
+      </tr>
+
+      <!-- Child nodes (indented) -->
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="order[{{child.id}}]" value="{{child.order}}" style="width:30px;" /></td>
+        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{child.name}}</td>
+        <td>
+          <a href="/admin/node/del/{{table}}/{{child.id}}"
+             onclick="return confirm('Do you really want to delete {{child.name}}');">Delete</a>
+          &nbsp;&nbsp;&nbsp;
+          <a href="/admin/node/edit/{{table}}/{{child.id}}">Edit</a>
+        </td>
+      </tr>
+      <!-- /REPEAT -->
+
+    </tbody>
+  </table>
+
+  <div class="action">
+    <div class="button">
+      <input type="submit" class="btn" name="submit" value="Submit" />
+    </div>
+  </div>
+</form>
+
+<!-- INCLUDE: admin/layout/footer.html -->

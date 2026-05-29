@@ -1,0 +1,39 @@
+<!-- Activity feed partial. Loaded into #feed_box (initial + AJAX pagination).
+     Data: feeds[], pagination.links -->
+
+<div class="info">
+  <ul id="feeds">
+
+    <!-- REPEAT: one <li> per feed entry -->
+    <li>
+      <div class="feed_content">
+        <img width="16" height="16" src="/upload/avatar/{{feed.author.avatar_small_path}}" alt="{{feed.author.name}}" />
+        &nbsp;
+        <a href="/member/{{feed.author.name}}">{{feed.author.name}}</a>
+        &nbsp;{{feed.content_text}}&nbsp;&nbsp;
+        <span class="time">{{feed.relative_time}}</span>
+      </div>
+      <!-- Optional: feed images (e.g. photo thumbnail) -->
+      <div class="feed_images">{{feed.images_html}}</div>
+    </li>
+
+    <li>
+      <div class="feed_content">
+        <img width="16" height="16" src="/upload/avatar/{{feed.author.avatar_small_path}}" alt="{{feed.author.name}}" />
+        &nbsp;
+        <a href="/member/{{feed.author.name}}">{{feed.author.name}}</a>
+        &nbsp;{{feed.content_text}}&nbsp;&nbsp;
+        <span class="time">{{feed.relative_time}}</span>
+      </div>
+    </li>
+    <!-- /REPEAT -->
+
+  </ul>
+
+  <div class="pagination">{{pagination.links}}</div>
+
+  <!-- Empty state -->
+  <!--
+  <p>No Activity recently</p>
+  -->
+</div>

@@ -1,0 +1,65 @@
+<!-- INCLUDE: admin/layout/header.html -->
+<!-- Data: user.id, user.username, user.role, user.activated, user.banned, user.ban_reason -->
+
+<div id="content">
+  <div class="page-header"><h3>Edit User</h3></div>
+
+  <div class="box">
+    <form action="/admin/user/edit/{{user.id}}" method="post" class="form-horizontal">
+      <fieldset>
+
+        <div class="control-group">
+          <label class="control-label" for="username">Username</label>
+          <div class="controls">
+            <input type="text" name="username" id="username" value="{{user.username}}" readonly="readonly" />
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="role">Role</label>
+          <div class="controls">
+            <select name="role" id="role">
+              <option value="user"   {{#if user.role_is_user}}selected{{/if}}>User</option>
+              <option value="editor" {{#if user.role_is_editor}}selected{{/if}}>Editor</option>
+              <option value="admin"  {{#if user.role_is_admin}}selected{{/if}}>Admin</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="activated">Activated</label>
+          <div class="controls">
+            <select name="activated" id="activated">
+              <option value="0" {{#if user.not_activated}}selected{{/if}}>N</option>
+              <option value="1" {{#if user.activated}}selected{{/if}}>Y</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="banned">Banned</label>
+          <div class="controls">
+            <select name="banned" id="banned">
+              <option value="0" {{#if user.not_banned}}selected{{/if}}>N</option>
+              <option value="1" {{#if user.is_banned}}selected{{/if}}>Y</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="ban_reason">Banned Reason</label>
+          <div class="controls">
+            <textarea name="ban_reason" id="ban_reason" cols="40" rows="6">{{user.ban_reason}}</textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<!-- INCLUDE: admin/layout/footer.html -->

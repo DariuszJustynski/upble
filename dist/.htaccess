@@ -1,0 +1,12 @@
+# Upble /dist – Apache shared hosting
+Options -Indexes
+DirectoryIndex index.html index.php
+
+# Serve existing files and directories as-is
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Fallback: send any unmatched path to index.html (prevents 404 on reload)
+RewriteRule ^ index.html [L]
