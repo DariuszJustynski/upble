@@ -1,0 +1,51 @@
+<!-- INCLUDE: layout/header.html -->
+<div id="content">
+  <div class="wrap clearfix">
+
+    <!-- Breadcrumb navigation -->
+    <div class="navigate">
+      <div class="cat_nav">
+        <a href="/{{city.slug}}">{{city.name}}</a>
+        &nbsp;&gt;&gt;&nbsp;
+        <a href="/biz/c/{{city.slug}}/{{top_category.slug}}">{{top_category.name}}</a>
+        <!-- Optional sub-category -->
+        &nbsp;&gt;&gt;&nbsp;
+        <a href="/biz/c/{{city.slug}}/{{sub_category.slug}}">{{sub_category.name}}</a>
+        <!-- Optional district -->
+        &nbsp;&gt;&gt;&nbsp;{{district.name}}
+      </div>
+
+      <!-- Neighborhood filter -->
+      <div class="cat_list clearfix">
+        <div class="span-2" style="width:80px;"><span>Neighborhood</span>&nbsp;</div>
+        <div class="span-16 last">
+          <ul>
+            <!-- REPEAT: one <li> per district -->
+            <li><a href="/biz/c/{{district.slug}}/{{category.slug}}">{{district.name}}</a></li>
+            <li><a href="/biz/c/{{district.slug}}/{{category.slug}}" class="selected">{{district.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sub-category filter -->
+      <div class="cat_list clearfix">
+        <div class="span-2" style="width:60px;"><span>Categories</span>&nbsp;</div>
+        <div class="span-16 last">
+          <ul>
+            <!-- REPEAT: one <li> per sub-category -->
+            <li><a href="/biz/c/{{local.slug}}/{{sub_cat.slug}}">{{sub_cat.name}}</a></li>
+            <li><a href="/biz/c/{{local.slug}}/{{sub_cat.slug}}" class="selected">{{sub_cat.name}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="main" class="span-16">
+      <!-- INCLUDE: public/biz/_list.html -->
+    </div>
+
+    <div id="side" class="span-8 last"></div>
+
+  </div>
+</div>
+<!-- INCLUDE: layout/footer.html -->

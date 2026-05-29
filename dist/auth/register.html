@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <title>{{page.title}}</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+  <link rel="stylesheet" href="../assets/css/screen.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="../assets/css/print.css" type="text/css" media="print" />
+  <!--[if IE]>
+    <link rel="stylesheet" href="../assets/css/ie.css" type="text/css" media="screen, projection" />
+  <![endif]-->
+  <link rel="stylesheet" href="../assets/css/style.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="../assets/css/colorbox.css" type="text/css" />
+  <script src="../assets/js/jquery.js"></script>
+  <script src="../assets/js/jquery.colorbox-min.js"></script>
+  <script src="../assets/js/common.js"></script>
+</head>
+
+<body>
+
+  <!-- Global AJAX loading spinner -->
+  <div id="loading" style="display:none;">
+    <img width="32" height="32" src="../assets/images/loading.gif" />
+  </div>
+
+  <!-- Top bar: city selector + user nav -->
+  <div id="prfs">
+    <div id="user_nav" class="container">
+
+      <div class="span-3" style="color:#9999CC;">
+        <strong>{{city.current.name}}</strong>
+      </div>
+
+      <ul id="citybar">
+        <li><span style="color:#999999">Other cities: </span></li>
+        <!-- REPEAT: one <li> per city -->
+        <li><a href="/{{city.slug}}">{{city.name}}</a></li>
+        <li><a href="/{{city.slug}}">{{city.name}}</a></li>
+      </ul>
+
+      <div id="user">
+        <!-- User navigation bar — shown inside #user div in header.
+     Two states: logged-in and guest.
+     API should inject: user.name, user.is_admin, user.pm_unread_count -->
+
+<!-- STATE: logged in -->
+<ul id="bar">
+  <!-- Admin link — only shown when user.is_admin == true -->
+  <li><a href="/admin/node/nodelist/city">admin</a></li>
+
+  <li>
+    <a href="/ucp/logout" onclick="Login._logout(event);return false;" rel="nofollow">logout</a>
+  </li>
+  <li>
+    <a href="/pm/inbox">message({{user.pm_unread_count}})</a>
+  </li>
+  <li class="thumb">
+    <a href="/member/{{user.name}}"><strong>{{user.name}}</strong></a>
+  </li>
+</ul>
+
+<!--
+  STATE: guest (not logged in)
+  <ul id="bar">
+    <li><a href="/ucp/forgot_password" rel="nofollow">forgot password</a></li>
+    <li><a href="/ucp/register" rel="nofollow">register</a></li>
+    <li><a href="/ucp/login" onclick="Login._show(event);return false;" rel="nofollow">login</a></li>
+  </ul>
+-->
+
+      </div>
+
+      <!-- Inline quick-login form (shown/hidden via JS) -->
+      <div id="login_form" style="display:none;">
+        <form action="/ucp/login" method="post" id="loginForm">
+          <input type="hidden" name="inajax" value="1" />
+          <a class="close" href="javascript:void(0)" onclick="Login._close();">X</a>
+          <p>
+            <label for="login">username:&nbsp;&nbsp;</label><br />
+            <input type="text" id="login" name="login" />
+          </p>
+          <p>
+            <label for="password">password:&nbsp;&nbsp;</label><br />
+            <input type="password" id="password" name="password" />
+          </p>
+          <p>
+            <input type="checkbox" name="remember" id="remember" value="1" />
+            <label for="remember">Remember me</label>
+          </p>
+          <a class="button" href="javascript:void(0)" onclick="Login._submit()">Login</a>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Site header: logo + search + add business + category nav -->
+  <div id="header" class="container">
+
+    <div class="span-5" id="logo">
+      <img src="../assets/images/logo.png" alt="Upble" />
+    </div>
+
+    <div class="span-12 search_box">
+      <form id="searchbox" action="/biz/search" method="post">
+        <input type="text" id="q" name="q" value="Search Business In {{city.current.name}}" />
+        <button id="s_submit">GO</button>
+      </form>
+    </div>
+
+    <div class="add_btm">
+      <a href="/biz/add">Add A Business</a>
+    </div>
+
+    <div class="clear"></div>
+
+    <div id="nav" class="container">
+      <a href="/">Home</a>
+      <!-- REPEAT: one <a> per top-level category -->
+      <a href="/biz/c/{{city.slug}}/{{category.slug}}">{{category.name}}</a>
+      <a href="/biz/c/{{city.slug}}/{{category.slug}}">{{category.name}}</a>
+      <a href="/biz/c/{{city.slug}}/{{category.slug}}">{{category.name}}</a>
+    </div>
+
+    <!-- Flash messages (error / success) -->
+    <div id="flashmsg" class="alert alert-error">
+      <a class="close" data-dismiss="alert" href="#">x</a>
+      {{flash.error}}
+    </div>
+    <!-- OR success variant:
+    <div id="flashmsg" class="alert alert-success">
+      <a class="close" href="javascript:;">x</a>
+      {{flash.success}}
+    </div>
+    -->
+
+  </div>
+
+  <!-- Global report/flag colorbox target (hidden) -->
+  <div style="display:none">
+    <div id="report_box" style="width:180px;height:150px;">
+      <h5>The reason to flag</h5>
+      <form action="/report/add" method="post" id="report_form">
+        <p style="margin-top:10px;">
+          <textarea name="comment" id="comment" cols="20" rows="3"></textarea>
+          <input type="hidden" name="url" value="" />
+        </p>
+        <div style="color:red;" id="msg"></div>
+        <p style="margin-top:10px;"><button id="report_bt">Submit</button></p>
+      </form>
+    </div>
+  </div>
+
+<div id="content">
+  <div id="top" class="clearfix">
+    <div class="span-4"><h1>Register</h1></div>
+  </div>
+
+  <div class="box">
+    <form action="/ucp/register" method="post">
+      <table cellpadding="0" cellspacing="0" class="user_table">
+
+        <tr>
+          <th><label for="username">Username</label></th>
+          <td>
+            <input type="text" name="username" id="username" value="{{form.username}}" maxlength="50" size="30" />
+            <span style="color:red;text-align:left;">{{errors.username}}</span>
+          </td>
+        </tr>
+
+        <tr>
+          <th><label for="email">Email Address</label></th>
+          <td>
+            <input type="text" name="email" id="email" value="{{form.email}}" maxlength="80" size="30" />
+            <span style="color:red;text-align:left;">{{errors.email}}</span>
+          </td>
+        </tr>
+
+        <tr>
+          <th><label for="password">Password</label></th>
+          <td>
+            <input type="password" name="password" id="password" size="30" />
+            <span style="color:red;text-align:left;">{{errors.password}}</span>
+          </td>
+        </tr>
+
+        <tr>
+          <th><label for="confirm_password">Confirm Password</label></th>
+          <td>
+            <input type="password" name="confirm_password" id="confirm_password" size="30" />
+            <span style="color:red;text-align:left;">{{errors.confirm_password}}</span>
+          </td>
+        </tr>
+
+        <!-- Optional captcha on registration -->
+        <!--
+        <tr>
+          <th>&nbsp;</th>
+          <td align="left">
+            <p>Enter the code exactly as it appears:</p>
+            {{captcha_html}}
+          </td>
+        </tr>
+        <tr>
+          <th><label for="captcha">Confirmation Code</label></th>
+          <td>
+            <input type="text" name="captcha" id="captcha" maxlength="8" />
+            <span style="color:red;text-align:left;">{{errors.captcha}}</span>
+          </td>
+        </tr>
+        -->
+
+        <tr>
+          <th>&nbsp;</th>
+          <td><button type="submit" name="register" class="submit">Register</button></td>
+        </tr>
+
+      </table>
+    </form>
+  </div>
+
+</div>
+<div class="footer">
+  <p>Powered by <a href="http://upble.com">Upble</a></p>
+</div>
+</body>
+</html>
+

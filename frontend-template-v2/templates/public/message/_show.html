@@ -1,0 +1,27 @@
+<!-- Single message view partial. Loaded into #pmbox.
+     Data: type ("inbox"|"sent"), pm.title, pm.username, pm.tousername, pm.created_at, pm.content, pm.id -->
+
+<div id="pmbox">
+  <div class="box clearfix last_box">
+
+    <div class="heading">
+      <h4>{{pm.title}}</h4>
+      <p>
+        <!-- STATE: inbox -->
+        From:&nbsp;<a href="/member/{{pm.username}}">{{pm.username}}</a>
+
+        <!-- STATE: sent
+        To:&nbsp;<a href="/member/{{pm.tousername}}">{{pm.tousername}}</a>
+        -->
+
+        &nbsp;&nbsp;<span class="time">{{pm.created_at}}</span>
+      </p>
+    </div>
+
+    <div style="width:500px;">{{pm.content}}</div>
+
+    <!-- STATE: inbox — show reply button -->
+    <a class="button" href="/pm/reply/{{pm.id}}" style="margin-top:20px;">Reply</a>
+
+  </div>
+</div>

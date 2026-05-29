@@ -1,0 +1,70 @@
+<!-- INCLUDE: admin/layout/header.html -->
+<!-- Data: action ("add"|"edit"), table ("city"|"category"), alias.table,
+     node.name, node.slug, node.order, node.parent_id, topNodes[] -->
+
+<div id="content">
+  <div class="page-header">
+    <h3>{{action}} {{alias.table}}</h3>
+  </div>
+
+  <div class="box">
+    <!-- Context hint -->
+    <!-- STATE: table == city -->
+    <p style="color:#3A87AD;">
+      If you are adding a city, please leave the Parent Node field blank.
+      If you are adding a neighborhood, please select the city it belongs to from the Parent Node field.
+    </p>
+
+    <!-- STATE: table == category
+    <p style="color:#3A87AD;">
+      If you are adding a top category, leave the Parent Node field blank.
+      If you are adding a sub category, please select its parent category from the Parent Node field.
+    </p>
+    -->
+
+    <form action="/admin/node/{{action}}/{{table}}/{{node.id}}" method="post" class="form-horizontal">
+      <fieldset>
+
+        <div class="control-group">
+          <label class="control-label" for="name">Name</label>
+          <div class="controls">
+            <input type="text" name="name" id="name" value="{{node.name}}" />
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="slug">Slug</label>
+          <div class="controls">
+            <input type="text" name="slug" id="slug" value="{{node.slug}}" />
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="order">Order</label>
+          <div class="controls">
+            <input type="text" name="order" id="order" value="{{node.order}}" />
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="parent_id">Parent Node</label>
+          <div class="controls">
+            <select name="parent_id" id="parent_id">
+              <option value="0"></option>
+              <!-- REPEAT: one <option> per top-level node -->
+              <option value="{{parent.id}}">{{parent.name}}</option>
+              <!-- /REPEAT -->
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+
+      </fieldset>
+    </form>
+  </div>
+</div>
+
+<!-- INCLUDE: admin/layout/footer.html -->

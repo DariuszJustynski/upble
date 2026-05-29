@@ -1,0 +1,514 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <title>{{page.title}}</title>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+  <link rel="stylesheet" href="../../assets/css/screen.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="../../assets/css/print.css" type="text/css" media="print" />
+  <!--[if IE]>
+    <link rel="stylesheet" href="../../assets/css/ie.css" type="text/css" media="screen, projection" />
+  <![endif]-->
+  <link rel="stylesheet" href="../../assets/css/style.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="../../assets/css/colorbox.css" type="text/css" />
+  <script src="../../assets/js/jquery.js"></script>
+  <script src="../../assets/js/jquery.colorbox-min.js"></script>
+  <script src="../../assets/js/common.js"></script>
+</head>
+
+<body>
+
+  <!-- Global AJAX loading spinner -->
+  <div id="loading" style="display:none;">
+    <img width="32" height="32" src="../../assets/images/loading.gif" />
+  </div>
+
+  <!-- Top bar: city selector + user nav -->
+  <div id="prfs">
+    <div id="user_nav" class="container">
+
+      <div class="span-3" style="color:#9999CC;">
+        <strong>{{city.current.name}}</strong>
+      </div>
+
+      <ul id="citybar">
+        <li><span style="color:#999999">Other cities: </span></li>
+        <!-- REPEAT: one <li> per city -->
+        <li><a href="/{{city.slug}}">{{city.name}}</a></li>
+        <li><a href="/{{city.slug}}">{{city.name}}</a></li>
+      </ul>
+
+      <div id="user">
+        <!-- User navigation bar — shown inside #user div in header.
+     Two states: logged-in and guest.
+     API should inject: user.name, user.is_admin, user.pm_unread_count -->
+
+<!-- STATE: logged in -->
+<ul id="bar">
+  <!-- Admin link — only shown when user.is_admin == true -->
+  <li><a href="/admin/node/nodelist/city">admin</a></li>
+
+  <li>
+    <a href="/ucp/logout" onclick="Login._logout(event);return false;" rel="nofollow">logout</a>
+  </li>
+  <li>
+    <a href="/pm/inbox">message({{user.pm_unread_count}})</a>
+  </li>
+  <li class="thumb">
+    <a href="/member/{{user.name}}"><strong>{{user.name}}</strong></a>
+  </li>
+</ul>
+
+<!--
+  STATE: guest (not logged in)
+  <ul id="bar">
+    <li><a href="/ucp/forgot_password" rel="nofollow">forgot password</a></li>
+    <li><a href="/ucp/register" rel="nofollow">register</a></li>
+    <li><a href="/ucp/login" onclick="Login._show(event);return false;" rel="nofollow">login</a></li>
+  </ul>
+-->
+
+      </div>
+
+      <!-- Inline quick-login form (shown/hidden via JS) -->
+      <div id="login_form" style="display:none;">
+        <form action="/ucp/login" method="post" id="loginForm">
+          <input type="hidden" name="inajax" value="1" />
+          <a class="close" href="javascript:void(0)" onclick="Login._close();">X</a>
+          <p>
+            <label for="login">username:&nbsp;&nbsp;</label><br />
+            <input type="text" id="login" name="login" />
+          </p>
+          <p>
+            <label for="password">password:&nbsp;&nbsp;</label><br />
+            <input type="password" id="password" name="password" />
+          </p>
+          <p>
+            <input type="checkbox" name="remember" id="remember" value="1" />
+            <label for="remember">Remember me</label>
+          </p>
+          <a class="button" href="javascript:void(0)" onclick="Login._submit()">Login</a>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Site header: logo + search + add business + category nav -->
+  <div id="header" class="container">
+
+    <div class="span-5" id="logo">
+      <img src="../../assets/images/logo.png" alt="Upble" />
+    </div>
+
+    <div class="span-12 search_box">
+      <form id="searchbox" action="/biz/search" method="post">
+        <input type="text" id="q" name="q" value="Search Business In {{city.current.name}}" />
+        <button id="s_submit">GO</button>
+      </form>
+    </div>
+
+    <div class="add_btm">
+      <a href="/biz/add">Add A Business</a>
+    </div>
+
+    <div class="clear"></div>
+
+    <div id="nav" class="container">
+      <a href="/">Home</a>
+      <!-- REPEAT: one <a> per top-level category -->
+      <a href="/biz/c/{{city.slug}}/{{category.slug}}">{{category.name}}</a>
+      <a href="/biz/c/{{city.slug}}/{{category.slug}}">{{category.name}}</a>
+      <a href="/biz/c/{{city.slug}}/{{category.slug}}">{{category.name}}</a>
+    </div>
+
+    <!-- Flash messages (error / success) -->
+    <div id="flashmsg" class="alert alert-error">
+      <a class="close" data-dismiss="alert" href="#">x</a>
+      {{flash.error}}
+    </div>
+    <!-- OR success variant:
+    <div id="flashmsg" class="alert alert-success">
+      <a class="close" href="javascript:;">x</a>
+      {{flash.success}}
+    </div>
+    -->
+
+  </div>
+
+  <!-- Global report/flag colorbox target (hidden) -->
+  <div style="display:none">
+    <div id="report_box" style="width:180px;height:150px;">
+      <h5>The reason to flag</h5>
+      <form action="/report/add" method="post" id="report_form">
+        <p style="margin-top:10px;">
+          <textarea name="comment" id="comment" cols="20" rows="3"></textarea>
+          <input type="hidden" name="url" value="" />
+        </p>
+        <div style="color:red;" id="msg"></div>
+        <p style="margin-top:10px;"><button id="report_bt">Submit</button></p>
+      </form>
+    </div>
+  </div>
+
+<div id="content">
+  <div class="wrap clearfix">
+
+    <!-- ── Main column ───────────────────────────────────────────── -->
+    <div class="span-16" id="main">
+
+      <!-- Business header card -->
+      <div class="box last_box clearfix">
+        <div class="span-12">
+
+          <div class="heading">
+            <h2>{{business.name}}</h2>
+          </div>
+
+          <!-- Star rating bar -->
+          <div class="span-3 star_wrap">
+            <div class="active-star" style="width:{{business.rating_percent}};height:16px;z-index:20;"></div>
+          </div>
+          <div class="span-2">
+            <a href="#commentlist" style="line-height:16px;">{{business.review_count}}&nbsp;reviews</a>
+          </div>
+
+          <!-- Business details -->
+          <div class="bizinfo clear">
+            <!-- Admin-only: delete form (hidden, triggered by JS) -->
+            <form action="/biz/del" method="post" id="biz_form"
+                  onsubmit="return confirm('Are you sure that you want to delete this business?')">
+              <input type="hidden" name="id" value="{{business.id}}" />
+            </form>
+
+            <p>
+              Categories:&nbsp;
+              <a href="/biz/c/{{business.city.slug}}/{{business.category_1.slug}}">{{business.category_1.name}}</a>,&nbsp;
+              <a href="/biz/c/{{business.city.slug}}/{{business.category_2.slug}}">{{business.category_2.name}}</a>
+            </p>
+            <p>{{business.address_1}}</p>
+            <p>{{business.address_2}}</p>
+            <p>{{business.district.name}}, {{business.city.name}}</p>
+            <p>{{business.phone}}</p>
+            <p><a href="{{business.website}}">{{business.website}}</a></p>
+            <p>First review by <a href="/member/{{business.first_review.username}}">{{business.first_review.username}}</a></p>
+
+            <!-- Owner / admin actions -->
+            <p>
+              <a href="/biz/edit/{{business.id}}">Edit</a>,
+              <a href="javascript:;" onclick="$('#biz_form').submit()">Delete</a>
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Thumbnail photo + count (right column) -->
+        <div class="span-3 last" style="float:right;text-align:center;line-height:20px;">
+          <a href="/photo/{{business.id}}/{{business.first_photo.id}}">
+            <img src="/upload/biz_photos/{{business.first_photo.folder}}/{{business.first_photo.id}}.thumb.jpg"
+                 class="thumbimg" title="{{business.first_photo.caption}}" alt="{{business.name}}" />
+          </a>
+          <p><a href="/photo/{{business.id}}/{{business.first_photo.id}}">{{business.photo_count}} photos</a></p>
+          <p><a href="/photo/upload/{{business.id}}">add photos</a></p>
+        </div>
+      </div>
+
+      <!-- Rating distribution -->
+      <div class="box last_box clearfix">
+        <div class="span-7" style="line-height:1em">
+          <div class="heading"><h6>Rating distribution</h6></div>
+          <ul class="rating-dis">
+            <li>
+              <span class="dis_pre">5 star</span>
+              <span class="dis_bg"><span class="dis_show" style="width:{{business.rating_5_percent}}">{{business.rating_5_percent}}</span></span>
+              <span class="dis_num">{{business.star_5_count}}</span>
+            </li>
+            <li>
+              <span class="dis_pre">4 star</span>
+              <span class="dis_bg"><span class="dis_show" style="width:{{business.rating_4_percent}}">{{business.rating_4_percent}}</span></span>
+              <span class="dis_num">{{business.star_4_count}}</span>
+            </li>
+            <li>
+              <span class="dis_pre">3 star</span>
+              <span class="dis_bg"><span class="dis_show" style="width:{{business.rating_3_percent}}">{{business.rating_3_percent}}</span></span>
+              <span class="dis_num">{{business.star_3_count}}</span>
+            </li>
+            <li>
+              <span class="dis_pre">2 star</span>
+              <span class="dis_bg"><span class="dis_show" style="width:{{business.rating_2_percent}}">{{business.rating_2_percent}}</span></span>
+              <span class="dis_num">{{business.star_2_count}}</span>
+            </li>
+            <li>
+              <span class="dis_pre">1 star</span>
+              <span class="dis_bg"><span class="dis_show" style="width:{{business.rating_1_percent}}">{{business.rating_1_percent}}</span></span>
+              <span class="dis_num">{{business.star_1_count}}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="span-8 last"></div>
+      </div>
+
+      <!-- Sub-menu: flag / write review / tab switcher -->
+      <div class="box last_box" style="padding-bottom:0px;">
+        <div class="submenu">
+          <div class="subsub">
+            <a href="/biz/{{business.id}}" class="flag">Flag this business</a>
+          </div>
+          <!-- "Write A Review" hidden when user already has a review -->
+          <div class="add"><a href="#review_form">Write A Review</a></div>
+          <ul class="subnav clearfix">
+            <li><a href="#review_box" class="review_tab active">Reviews</a></li>
+            <li><a href="#info_box" class="review_tab">About</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ── Review list ──────────────────────────────────────────── -->
+      <div class="box last_box" id="review_box">
+        <ul id="commentlist" class="review_list">
+
+          <!-- REPEAT: one <li> per review -->
+          <li class="clearfix">
+            <div class="user_info span-2 last">
+              <div class="img_mid">
+                <a href="/member/{{review.username}}">
+                  <img src="/upload/avatar/{{review.avatar_mid_path}}" alt="{{review.username}}" />
+                </a>
+              </div>
+              <!-- Review count badge -->
+              <div class="span-2 last" style="margin-top:4px;">
+                <div class="icon">
+                  <img title="{{review.author.review_count}} reviews" src="../../assets/images/reviews.gif" alt="reviews" />
+                </div>
+                <div style="width:45px;overflow:hidden;float:left;">
+                  <a href="/member/{{review.username}}/reviews">{{review.author.review_count}}</a>
+                </div>
+              </div>
+              <!-- Flower (likes) count -->
+              <div class="span-2 last user_flower" id="user_flower_{{review.author.id}}" style="margin-top:4px;">
+                {{review.author.flower_count}}
+              </div>
+            </div>
+
+            <div id="review_{{review.id}}" class="review">
+              <div class="clearfix" style="height:25px;overflow:hidden;">
+                <div class="span-2" style="margin-top:4px;">
+                  <strong><a href="/member/{{review.username}}">{{review.username}}</a></strong>
+                </div>
+                <div class="span-2 review_time">
+                  <span class="time">{{review.date}}</span>
+                </div>
+                <!-- Optional: updated date -->
+                <div class="span-4 review_time">
+                  <span class="time" style="font-style:italic;">Updated at&nbsp;{{review.updated_date}}</span>
+                </div>
+              </div>
+
+              <div class="clearfix" style="height:25px;margin-bottom:8px;overflow:hidden;">
+                <div class="span-3 rating-wrap rating-{{review.rating}}"></div>
+
+                <!-- Photo count link -->
+                <div class="span-1 review_time camera">
+                  <a href="/photo/{{business.id}}/{{review.author.first_photo_id}}/from/{{review.username}}">
+                    {{review.author.photo_count}}
+                  </a>
+                </div>
+
+                <!-- Admin: delete review -->
+                <div class="span-1 review_time">
+                  <form action="/review/del" method="post"
+                        onsubmit="return confirm('Are you sure that you want to delete this review?')">
+                    <input type="hidden" name="bizid" value="{{business.id}}" />
+                    <input type="hidden" name="id" value="{{review.id}}" />
+                    <a href="javascript:;" onclick="$(this).parent().submit();">Delete</a>
+                  </form>
+                </div>
+
+                <!-- Owner: edit review -->
+                <div class="span-1 review_time">
+                  <a href="/review/edit/{{business.id}}/{{review.id}}">Edit</a>
+                </div>
+              </div>
+
+              <div class="rev_wrap">{{review.content}}</div>
+
+              <div class="span-8" style="margin-top:10px;">
+                <span class="thank">{{config.thank_author_text}}</span>
+                &nbsp;&nbsp;&nbsp;
+                <span>
+                  <a href="javascript:void(0)" class="send_flower"
+                     id="send_flower_{{review.author.id}}_{{business.id}}_{{review.id}}_review">
+                    <img src="../../assets/images/flower.gif" alt="flower" />
+                  </a>
+                  &nbsp;
+                  <span class="blue_note" id="flower_holder_{{review.id}}">{{review.flower_count}}</span>
+                </span>
+              </div>
+
+              <div class="span-4" style="margin-top:10px;float:right;text-align:right;">
+                <a href="/review/show/{{review.id}}" class="flag" rel="nofollow">Flag this review</a>
+              </div>
+              <div class="clear"></div>
+            </div>
+          </li>
+          <!-- /REPEAT -->
+
+        </ul>
+
+        <!-- Pagination -->
+        <div class="pagination">{{pagination.links}}</div>
+
+        <!-- Empty state -->
+        <!--
+        <p>No reviews yet, why not be the first to write one?</p>
+        -->
+      </div>
+
+      <!-- About tab (hidden by default) -->
+      <div class="box last_box" id="info_box" style="display:none;">
+        <p>{{business.about}}</p>
+        <!--
+          Empty state:
+          <p>No information provided for this business yet</p>
+        -->
+      </div>
+
+      <!-- ── Write-a-review form (hidden when user already reviewed) ── -->
+      <div class="box last_box">
+        <div class="caption" style="padding-left:70px;">
+          <h6>Write A Review</h6>
+        </div>
+        <form action="/review/add" method="post" id="review_form">
+          <input type="hidden" name="bizid" value="{{business.id}}" />
+          <table cellpadding="0" cellspacing="0" class="user_table biz_table">
+            <tr>
+              <th style="vertical-align:middle;">Rating:</th>
+              <td>
+                <div style="width:200px;">
+                  <div class="rating-block">
+                    <input type="hidden" name="rating" id="rating" value="" />
+                    <ul>
+                      <li><a class="star-1" rating-value="1" title="very poor" href="javascript:void(0);"></a></li>
+                      <li><a class="star-2" rating-value="2" title="poor" href="javascript:void(0);"></a></li>
+                      <li><a class="star-3" rating-value="3" title="average" href="javascript:void(0);"></a></li>
+                      <li><a class="star-4" rating-value="4" title="good" href="javascript:void(0);"></a></li>
+                      <li><a class="star-5" rating-value="5" title="excellent" href="javascript:void(0);"></a></li>
+                    </ul>
+                  </div>
+                  <span class="rating-hint">click to rate</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th style="vertical-align:top;">Review:</th>
+              <td>
+                <textarea cols="50" rows="10" name="content"></textarea>
+                <span style="color:red;"></span>
+              </td>
+            </tr>
+            <tr>
+              <th>&nbsp;</th>
+              <td>
+                <input type="button" value="Submit" class="submit" onclick="submit_review();" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+    </div><!-- /main -->
+
+    <!-- ── Sidebar: map ──────────────────────────────────────────── -->
+    <div class="span-8 last" id="side">
+      <div id="map_canvas" class="box last_box" style="height:300px;"
+           data-lat="{{business.location.lat}}"
+           data-lng="{{business.location.lng}}">
+      </div>
+      <!-- Owner / admin: fix location link + hidden edit map -->
+      <p style="text-align:center;margin-top:5px;">
+        <a href="#" class="fix_location">Fix incorrect map marker</a>
+      </p>
+      <div style="display:none;">
+        <div id="map">
+          <div id="map_edit" style="width:450px;height:450px;"></div>
+          <p style="margin:10px 0 5px 200px;">
+            <a class="button" href="#" onclick="confirm_fix()">Save changes</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  var lat = "{{business.location.lat}}";
+  var lng = "{{business.location.lng}}";
+  var bizId = "{{business.id}}";
+
+  function map_initialize() {
+    var mapOptions = {
+      zoom: 15,
+      center: new google.maps.LatLng(lat, lng),
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      scaleControl: true,
+      mapTypeControl: true,
+      mapTypeControlOptions: { style: google.maps.MapTypeControlStyle.DROPDOWN_MENU }
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+    new google.maps.Marker({ position: new google.maps.LatLng(lat, lng), map: map });
+  }
+
+  function fix_location_map() {
+    var mapOptions = {
+      zoom: 15,
+      center: new google.maps.LatLng(lat, lng),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map_edit = new google.maps.Map(document.getElementById("map_edit"), mapOptions);
+    var editMarker = new google.maps.Marker({
+      position: new google.maps.LatLng(lat, lng),
+      map: map_edit,
+      draggable: true
+    });
+    google.maps.event.addListener(editMarker, "dragend", function(event) {
+      lat = event.latLng.lat();
+      lng = event.latLng.lng();
+    });
+  }
+
+  function confirm_fix() {
+    Utils.postAction("/biz/location", { id: bizId, lat: lat, lng: lng });
+    $.colorbox.close();
+  }
+
+  function submit_review() {
+    Utils.postAction($("#review_form").attr("action"), $("#review_form").serialize());
+  }
+
+  $(function() {
+    $(".review_tab").click(function(event) {
+      event.preventDefault();
+      var cur_active = $(".active").attr("href");
+      var cur_hide   = $(this).attr("href");
+      $(".active").removeClass("active");
+      $(this).addClass("active");
+      $(cur_active).hide();
+      $(cur_hide).show();
+    });
+
+    /* Load Google Maps asynchronously */
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "https://maps.googleapis.com/maps/api/js?key={{config.google_maps_api_key}}&callback=map_initialize";
+    document.body.appendChild(script);
+  });
+</script>
+<div class="footer">
+  <p>Powered by <a href="http://upble.com">Upble</a></p>
+</div>
+</body>
+</html>
+
